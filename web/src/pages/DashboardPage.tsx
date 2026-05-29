@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
 import SubtopicRow from '../components/SubtopicRow';
-import t from '../i18n/ms';
+import { useI18n } from '../context/I18nContext';
 
 export default function DashboardPage() {
+  const { t } = useI18n();
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
     queryFn: api.dashboard,

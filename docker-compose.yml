@@ -1,30 +1,31 @@
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: spmprep
       POSTGRES_USER: spmprep
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword}
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./api/migrations/001_schema.up.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./api/migrations/002_seed.up.sql:/docker-entrypoint-initdb.d/02_seed.sql
+      - ./api/migrations/003_more_questions.up.sql:/docker-entrypoint-initdb.d/03_more_questions.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U spmprep"]
-      interval: 3s
-      timeout: 3s
+      interval: 5s
+      timeout: 5s
       retries: 10
 
   api:
     build: ./api
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       PORT: "8080"
-      DATABASE_URL: postgres://spmprep:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/spmprep?sslmode=disable
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      DATABASE_URL: postgres://spmprep:${POSTGRES_PASSWORD}@postgres:5432/spmprep?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
@@ -34,8 +35,9 @@ services:
       context: ./web
       args:
         VITE_API_URL: ""
+    restart: unless-stopped
     ports:
-      - "3000:80"
+      - "127.0.0.1:3000:80"
     depends_on:
       - api
 

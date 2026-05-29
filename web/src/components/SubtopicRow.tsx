@@ -1,12 +1,14 @@
 import type { SubtopicProgress } from '../api/client';
 import ProgressBar from './ProgressBar';
-import t from '../i18n/ms';
+import { useI18n } from '../context/I18nContext';
 
 interface Props {
   item: SubtopicProgress;
 }
 
 export default function SubtopicRow({ item }: Props) {
+  const { t } = useI18n();
+
   return (
     <div className="subtopic-row">
       <div className="subtopic-info">

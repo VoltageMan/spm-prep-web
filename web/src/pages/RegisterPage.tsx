@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import t from '../i18n/ms';
+import { useI18n } from '../context/I18nContext';
+import { type Locale } from '../i18n';
 
 export default function RegisterPage() {
   const { register, isLoading } = useAuth();
+  const { t, locale, setLocale, localeLabels } = useI18n();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +27,18 @@ export default function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <div className="auth-lang-row">
+          <select
+            className="lang-select-light"
+            value={locale}
+            onChange={(e) => setLocale(e.target.value as Locale)}
+            aria-label="Language"
+          >
+            {(Object.entries(localeLabels) as [Locale, string][]).map(([code, label]) => (
+              <option key={code} value={code}>{label}</option>
+            ))}
+          </select>
+        </div>
         <h1>{t.appName}</h1>
         <p className="tagline">{t.tagline}</p>
 

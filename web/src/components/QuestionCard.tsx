@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Question } from '../api/client';
-import t from '../i18n/ms';
+import { useI18n } from '../context/I18nContext';
 
 interface Props {
   question: Question;
@@ -9,6 +9,7 @@ interface Props {
 }
 
 export default function QuestionCard({ question, onSubmit, disabled }: Props) {
+  const { t } = useI18n();
   const [selected, setSelected] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

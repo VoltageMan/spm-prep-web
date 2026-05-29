@@ -3,9 +3,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, type AnswerResponse } from '../api/client';
 import QuestionCard from '../components/QuestionCard';
 import ExplanationCard from '../components/ExplanationCard';
-import t from '../i18n/ms';
+import { useI18n } from '../context/I18nContext';
 
 export default function PracticePage() {
+  const { t } = useI18n();
   const queryClient = useQueryClient();
   const [result, setResult] = useState<AnswerResponse | null>(null);
   const [submitting, setSubmitting] = useState(false);
