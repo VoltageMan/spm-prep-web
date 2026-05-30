@@ -43,5 +43,5 @@ func Middleware(secret string) func(http.Handler) http.Handler {
 
 func UserIDFromContext(ctx context.Context) (int64, bool) {
 	v, ok := ctx.Value(userIDKey).(int64)
-	return v, ok
+	return v, ok && v > 0
 }

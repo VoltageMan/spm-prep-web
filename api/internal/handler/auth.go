@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"errors"
+	"log"
 	"net/http"
 
 	"github.com/spm-prep/api/internal/auth"
@@ -28,7 +30,17 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 	token, user, err := h.svc.Register(r.Context(), req.Email, req.Password, req.DisplayName)
 	if err != nil {
-		writeError(w, http.StatusBadRequest, err.Error())
+		switch {
+		case errors.Is(err, service.ErrEmailTaken):
+			writeError(w, http.StatusConflict, err.Error())
+		case errors.Is(err, service.ErrInvalidEmail),
+			errors.Is(err, service.ErrShortPassword),
+			errors.Is(err, service.ErrDisplayNameRequired):
+			writeError(w, http.StatusBadRequest, err.Error())
+		default:
+			log.Printf("register: unexpected error: %v", err)
+			writeError(w, http.StatusInternalServerError, "ralat dalaman")
+		}
 		return
 	}
 
@@ -50,7 +62,13 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	token, user, err := h.svc.Login(r.Context(), req.Email, req.Password)
 	if err != nil {
-		writeError(w, http.StatusUnauthorized, err.Error())
+		switch {
+		case errors.Is(err, service.ErrInvalidCredentials):
+			writeError(w, http.StatusUnauthorized, err.Error())
+		default:
+			log.Printf("login: unexpected error: %v", err)
+			writeError(w, http.StatusInternalServerError, "ralat dalaman")
+		}
 		return
 	}
 

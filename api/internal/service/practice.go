@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/spm-prep/api/internal/model"
@@ -69,7 +70,7 @@ func (s *PracticeService) NextQuestion(ctx context.Context, userID int64) (*mode
 	// 4. Pick best subtopic
 	subtopicID := SelectSubtopic(scores)
 	if subtopicID == 0 {
-		return nil, errors.New("tiada soalan tersedia")
+		return nil, ErrNoQuestionsAvailable
 	}
 
 	// 5. Get recently shown questions to exclude
@@ -86,7 +87,10 @@ func (s *PracticeService) NextQuestion(ctx context.Context, userID int64) (*mode
 func (s *PracticeService) SubmitAnswer(ctx context.Context, userID int64, req model.AnswerRequest) (*model.AnswerResponse, error) {
 	question, err := s.questions.GetByID(ctx, req.QuestionID)
 	if err != nil {
-		return nil, errors.New("soalan tidak dijumpai")
+		if errors.Is(err, repository.ErrNotFound) {
+			return nil, ErrQuestionNotFound
+		}
+		return nil, fmt.Errorf("get question: %w", err)
 	}
 
 	isCorrect := CheckAnswer(question.Type, question.CorrectAnswer, req.Answer)

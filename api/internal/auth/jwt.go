@@ -40,5 +40,8 @@ func ValidateToken(tokenStr, secret string) (*Claims, error) {
 	if !ok || !token.Valid {
 		return nil, fmt.Errorf("invalid token")
 	}
+	if claims.UserID <= 0 {
+		return nil, fmt.Errorf("invalid user_id in token")
+	}
 	return claims, nil
 }

@@ -16,6 +16,7 @@ func writeError(w http.ResponseWriter, status int, msg string) {
 }
 
 func decodeJSON(r *http.Request, v any) error {
+	r.Body = http.MaxBytesReader(nil, r.Body, 1<<20)
 	defer r.Body.Close()
 	dec := json.NewDecoder(r.Body)
 	dec.DisallowUnknownFields()

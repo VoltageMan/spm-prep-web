@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/mail"
 	"strings"
 	"unicode/utf8"
@@ -13,9 +14,9 @@ import (
 )
 
 type AuthService struct {
-	users      *repository.UserRepo
-	jwtSecret  string
-	dummyHash  string
+	users     *repository.UserRepo
+	jwtSecret string
+	dummyHash string
 }
 
 func NewAuthService(users *repository.UserRepo, jwtSecret string) *AuthService {
@@ -26,31 +27,31 @@ func NewAuthService(users *repository.UserRepo, jwtSecret string) *AuthService {
 func (s *AuthService) Register(ctx context.Context, email, password, displayName string) (string, *model.User, error) {
 	email = strings.ToLower(strings.TrimSpace(email))
 	if _, err := mail.ParseAddress(email); err != nil {
-		return "", nil, errors.New("alamat emel tidak sah")
+		return "", nil, ErrInvalidEmail
 	}
 	if utf8.RuneCountInString(password) < 8 {
-		return "", nil, errors.New("kata laluan mesti sekurang-kurangnya 8 aksara")
+		return "", nil, ErrShortPassword
 	}
 	if displayName == "" {
-		return "", nil, errors.New("nama paparan diperlukan")
+		return "", nil, ErrDisplayNameRequired
 	}
 
 	hash, err := auth.HashPassword(password)
 	if err != nil {
-		return "", nil, err
+		return "", nil, fmt.Errorf("hash password: %w", err)
 	}
 
 	user, err := s.users.Create(ctx, email, hash, displayName)
 	if err != nil {
 		if errors.Is(err, repository.ErrEmailTaken) {
-			return "", nil, errors.New("emel sudah didaftarkan")
+			return "", nil, ErrEmailTaken
 		}
-		return "", nil, err
+		return "", nil, fmt.Errorf("create user: %w", err)
 	}
 
 	token, err := auth.GenerateToken(user.ID, s.jwtSecret)
 	if err != nil {
-		return "", nil, err
+		return "", nil, fmt.Errorf("generate token: %w", err)
 	}
 	return token, user, nil
 }
@@ -60,15 +61,15 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (string
 	user, err := s.users.GetByEmail(ctx, email)
 	if err != nil {
 		auth.CheckPassword(s.dummyHash, password)
-		return "", nil, errors.New("emel atau kata laluan salah")
+		return "", nil, ErrInvalidCredentials
 	}
 	if !auth.CheckPassword(user.PasswordHash, password) {
-		return "", nil, errors.New("emel atau kata laluan salah")
+		return "", nil, ErrInvalidCredentials
 	}
 
 	token, err := auth.GenerateToken(user.ID, s.jwtSecret)
 	if err != nil {
-		return "", nil, err
+		return "", nil, fmt.Errorf("generate token: %w", err)
 	}
 	return token, user, nil
 }
