@@ -44,7 +44,7 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusCreated, map[string]any{
+	WriteJSON(w, http.StatusCreated, map[string]any{
 		"token": token,
 		"user":  user,
 	})
@@ -72,7 +72,7 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, map[string]any{
+	WriteJSON(w, http.StatusOK, map[string]any{
 		"token": token,
 		"user":  user,
 	})
@@ -89,5 +89,5 @@ func (h *AuthHandler) Me(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "pengguna tidak dijumpai")
 		return
 	}
-	writeJSON(w, http.StatusOK, user)
+	WriteJSON(w, http.StatusOK, user)
 }

@@ -35,7 +35,7 @@ func (h *PracticeHandler) NextQuestion(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	writeJSON(w, http.StatusOK, q)
+	WriteJSON(w, http.StatusOK, q)
 }
 
 func (h *PracticeHandler) SubmitAnswer(w http.ResponseWriter, r *http.Request) {
@@ -70,5 +70,5 @@ func (h *PracticeHandler) SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	writeJSON(w, http.StatusOK, resp)
+	WriteJSON(w, http.StatusOK, resp)
 }

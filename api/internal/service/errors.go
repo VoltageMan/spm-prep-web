@@ -10,4 +10,6 @@ var (
 	ErrInvalidCredentials   = errors.New("emel atau kata laluan salah")
 	ErrQuestionNotFound     = errors.New("soalan tidak dijumpai")
 	ErrNoQuestionsAvailable = errors.New("tiada soalan tersedia")
+	ErrReasonTooLong        = errors.New("alasan terlalu panjang")
+	ErrAlreadyReported      = errors.New("anda sudah melaporkan soalan ini")
 )

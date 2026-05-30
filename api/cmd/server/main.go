@@ -44,22 +44,25 @@ func main() {
 	questionRepo := repository.NewQuestionRepo(pool)
 	attemptRepo := repository.NewAttemptRepo(pool)
 	reviewRepo := repository.NewReviewRepo(pool)
+	reportRepo := repository.NewReportRepo(pool)
 
 	// Services
 	authSvc := service.NewAuthService(userRepo, cfg.JWTSecret)
 	practiceSvc := service.NewPracticeService(questionRepo, attemptRepo, reviewRepo)
+	reportSvc := service.NewReportService(reportRepo)
 
 	// Handlers
 	authH := handler.NewAuthHandler(authSvc)
 	practiceH := handler.NewPracticeHandler(practiceSvc)
 	dashH := handler.NewDashboardHandler(practiceSvc)
+	reportH := handler.NewReportHandler(reportSvc)
 
 	// Router
 	r := chi.NewRouter()
 	r.Use(chimw.Logger)
 	r.Use(chimw.Recoverer)
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowedOrigins:   cfg.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		AllowCredentials: true,
@@ -68,7 +71,7 @@ func main() {
 
 	// Health check
 	r.Get("/api/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`{"status":"ok"}`))
+		handler.WriteJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
 
 	// Public routes
@@ -83,11 +86,16 @@ func main() {
 		r.Post("/api/practice/answer", practiceH.SubmitAnswer)
 		r.Get("/api/dashboard", dashH.Dashboard)
 		r.Get("/api/topics", dashH.Topics)
+		r.Post("/api/questions/{id}/report", reportH.Report)
 	})
 
 	srv := &http.Server{
-		Addr:    ":" + cfg.Port,
-		Handler: r,
+		Addr:              ":" + cfg.Port,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 
 	// Graceful shutdown
@@ -98,7 +106,9 @@ func main() {
 		log.Println("shutting down...")
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		srv.Shutdown(shutdownCtx)
+		if err := srv.Shutdown(shutdownCtx); err != nil {
+			log.Printf("shutdown error: %v", err)
+		}
 	}()
 
 	log.Printf("server starting on :%s", cfg.Port)

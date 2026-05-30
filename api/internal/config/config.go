@@ -3,19 +3,22 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Config struct {
-	Port        string
-	DatabaseURL string
-	JWTSecret   string
+	Port           string
+	DatabaseURL    string
+	JWTSecret      string
+	AllowedOrigins []string
 }
 
 func Load() (*Config, error) {
 	c := &Config{
-		Port:        getEnv("PORT", "8080"),
-		DatabaseURL: getEnv("DATABASE_URL", ""),
-		JWTSecret:   getEnv("JWT_SECRET", ""),
+		Port:           getEnv("PORT", "8080"),
+		DatabaseURL:    getEnv("DATABASE_URL", ""),
+		JWTSecret:      getEnv("JWT_SECRET", ""),
+		AllowedOrigins: parseOrigins(getEnv("CORS_ORIGINS", "http://localhost:5173")),
 	}
 	if c.DatabaseURL == "" {
 		return nil, fmt.Errorf("DATABASE_URL is required")
@@ -31,4 +34,15 @@ func getEnv(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+func parseOrigins(raw string) []string {
+	parts := strings.Split(raw, ",")
+	origins := make([]string, 0, len(parts))
+	for _, p := range parts {
+		if s := strings.TrimSpace(p); s != "" {
+			origins = append(origins, s)
+		}
+	}
+	return origins
 }

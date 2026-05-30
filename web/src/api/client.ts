@@ -1,13 +1,16 @@
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
-// JWT is stored in memory (not localStorage) to reduce XSS attack surface.
-// Trade-off: token is lost on page refresh, requiring re-login.
-// For MVP this is acceptable; a future version could use httpOnly cookies
-// or localStorage with a clear comment about the XSS risk.
-let token: string | null = null;
+// sessionStorage chosen over localStorage so token dies when the tab closes;
+// future iteration should move to httpOnly cookie + CSRF token.
+let token: string | null = sessionStorage.getItem('jwt');
 
 export function setToken(t: string | null) {
   token = t;
+  if (t) {
+    sessionStorage.setItem('jwt', t);
+  } else {
+    sessionStorage.removeItem('jwt');
+  }
 }
 
 export function getToken(): string | null {
@@ -27,9 +30,18 @@ async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: 'Ralat rangkaian' }));
-    throw new Error(body.error || `HTTP ${res.status}`);
+    const err = new ApiError(body.error || `HTTP ${res.status}`, res.status);
+    throw err;
   }
   return res.json();
+}
+
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
 }
 
 export const api = {
@@ -58,6 +70,26 @@ export const api = {
   dashboard: () => request<DashboardData>('/api/dashboard'),
 
   topics: () => request<TopicWithSubtopics[]>('/api/topics'),
+
+  reportQuestion: async (questionId: number, reason: string): Promise<void> => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const res = await fetch(`${API_BASE}/api/questions/${questionId}/report`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ reason }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ error: 'Ralat rangkaian' }));
+      throw new ApiError(body.error || `HTTP ${res.status}`, res.status);
+    }
+  },
 };
 
 // Types

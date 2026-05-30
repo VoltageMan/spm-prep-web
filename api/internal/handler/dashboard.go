@@ -26,7 +26,7 @@ func (h *DashboardHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "gagal memuatkan papan pemuka")
 		return
 	}
-	writeJSON(w, http.StatusOK, data)
+	WriteJSON(w, http.StatusOK, data)
 }
 
 func (h *DashboardHandler) Topics(w http.ResponseWriter, r *http.Request) {
@@ -35,5 +35,5 @@ func (h *DashboardHandler) Topics(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "gagal memuatkan topik")
 		return
 	}
-	writeJSON(w, http.StatusOK, topics)
+	WriteJSON(w, http.StatusOK, topics)
 }

@@ -26,6 +26,7 @@ services:
       PORT: "8080"
       DATABASE_URL: postgres://spmprep:${POSTGRES_PASSWORD}@postgres:5432/spmprep?sslmode=disable
       JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
     depends_on:
       postgres:
         condition: service_healthy

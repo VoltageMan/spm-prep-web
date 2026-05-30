@@ -40,6 +40,16 @@ const en = {
   notStarted: 'Not started',
   days: 'days',
 
+  // Report
+  reportButton: 'Is this question wrong?',
+  reportPlaceholder: 'What\'s wrong? (optional)',
+  reportCancel: 'Cancel',
+  reportSubmit: 'Send report',
+  reportSubmitting: 'Sending...',
+  reportThanks: 'Thanks for your report',
+  reportDuplicate: 'You\'ve already reported this question',
+  reportError: 'Failed to send report. Try again.',
+
   // Errors
   errorGeneric: 'Something went wrong. Please try again.',
 } as const;

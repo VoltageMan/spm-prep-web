@@ -41,7 +41,7 @@ export default function PracticePage() {
   return (
     <div className="practice-page">
       {result ? (
-        <ExplanationCard result={result} onNext={handleNext} />
+        <ExplanationCard result={result} questionId={question.id} onNext={handleNext} />
       ) : (
         <QuestionCard question={question} onSubmit={handleSubmit} disabled={submitting} />
       )}

@@ -40,6 +40,16 @@ const ms = {
   notStarted: 'Belum mula',
   days: 'hari',
 
+  // Report
+  reportButton: 'Adakah soalan ini salah?',
+  reportPlaceholder: 'Apa yang salah? (pilihan)',
+  reportCancel: 'Batal',
+  reportSubmit: 'Hantar laporan',
+  reportSubmitting: 'Menghantar...',
+  reportThanks: 'Terima kasih atas laporan anda',
+  reportDuplicate: 'Anda sudah melaporkan soalan ini',
+  reportError: 'Gagal menghantar laporan. Cuba lagi.',
+
   // Errors
   errorGeneric: 'Sesuatu telah berlaku. Sila cuba lagi.',
 } as const;

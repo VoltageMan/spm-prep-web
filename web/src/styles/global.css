@@ -390,6 +390,124 @@ body {
   font-weight: 600;
 }
 
+/* Report section */
+.report-section {
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 1rem;
+}
+
+.report-link {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+
+.report-link:hover {
+  text-decoration: underline;
+}
+
+.report-panel {
+  margin-top: 0.5rem;
+}
+
+.report-textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.report-textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.report-textarea:disabled {
+  opacity: 0.5;
+}
+
+.report-counter {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+.report-counter-over {
+  color: var(--color-error);
+}
+
+.report-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.report-btn-cancel {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.report-btn-cancel:hover {
+  background: #f1f3f4;
+}
+
+.report-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.report-btn-submit {
+  background: var(--color-primary);
+  border: none;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-btn-submit:hover {
+  background: var(--color-primary-dark);
+}
+
+.report-btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.report-thanks {
+  color: var(--color-success);
+  font-size: 0.8125rem;
+}
+
+.report-duplicate {
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+}
+
+.report-error {
+  color: var(--color-error);
+  font-size: 0.8125rem;
+  margin-bottom: 0.25rem;
+}
+
 /* Practice page */
 .practice-page {
   padding-top: 0.5rem;
