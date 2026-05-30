@@ -248,7 +248,7 @@ INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, ex
  3),
 
 (6, 'short',
- 'Senaraikan semua integer yang memenuhi: -2 ≤ x < 3. Berapa banyak integer?',
+ 'Berapa banyak integer yang memenuhi: -2 ≤ x < 3?',
  NULL,
  '5',
  'Langkah 1: Integer: -2, -1, 0, 1, 2.\nLangkah 2: Jumlah = 5.\nJawapan: 5',

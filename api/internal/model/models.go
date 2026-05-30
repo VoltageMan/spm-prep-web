@@ -54,6 +54,7 @@ type Review struct {
 	IntervalDays int       `json:"interval_days"`
 	DueAt        time.Time `json:"due_at"`
 	Reps         int       `json:"reps"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 // TopicWithSubtopics is used for the /api/topics response.

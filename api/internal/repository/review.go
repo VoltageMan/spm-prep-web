@@ -18,10 +18,10 @@ func NewReviewRepo(db *pgxpool.Pool) *ReviewRepo {
 func (r *ReviewRepo) GetByUserAndSubtopic(ctx context.Context, userID, subtopicID int64) (*model.Review, error) {
 	rev := &model.Review{}
 	err := r.db.QueryRow(ctx,
-		`SELECT id, user_id, subtopic_id, ease, interval_days, due_at, reps
+		`SELECT id, user_id, subtopic_id, ease, interval_days, due_at, reps, updated_at
 		 FROM reviews WHERE user_id = $1 AND subtopic_id = $2`,
 		userID, subtopicID,
-	).Scan(&rev.ID, &rev.UserID, &rev.SubtopicID, &rev.Ease, &rev.IntervalDays, &rev.DueAt, &rev.Reps)
+	).Scan(&rev.ID, &rev.UserID, &rev.SubtopicID, &rev.Ease, &rev.IntervalDays, &rev.DueAt, &rev.Reps, &rev.UpdatedAt)
 	return rev, err
 }
 
@@ -31,10 +31,10 @@ func (r *ReviewRepo) Upsert(ctx context.Context, rev *model.Review) (*model.Revi
 		`INSERT INTO reviews (user_id, subtopic_id, ease, interval_days, due_at, reps)
 		 VALUES ($1, $2, $3, $4, $5, $6)
 		 ON CONFLICT (user_id, subtopic_id)
-		 DO UPDATE SET ease = $3, interval_days = $4, due_at = $5, reps = $6
-		 RETURNING id, user_id, subtopic_id, ease, interval_days, due_at, reps`,
+		 DO UPDATE SET ease = $3, interval_days = $4, due_at = $5, reps = $6, updated_at = now()
+		 RETURNING id, user_id, subtopic_id, ease, interval_days, due_at, reps, updated_at`,
 		rev.UserID, rev.SubtopicID, rev.Ease, rev.IntervalDays, rev.DueAt, rev.Reps,
-	).Scan(&out.ID, &out.UserID, &out.SubtopicID, &out.Ease, &out.IntervalDays, &out.DueAt, &out.Reps)
+	).Scan(&out.ID, &out.UserID, &out.SubtopicID, &out.Ease, &out.IntervalDays, &out.DueAt, &out.Reps, &out.UpdatedAt)
 	return out, err
 }
 

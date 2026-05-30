@@ -29,7 +29,7 @@ func (r *UserRepo) Create(ctx context.Context, email, passwordHash, displayName 
 func (r *UserRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {
 	u := &model.User{}
 	err := r.db.QueryRow(ctx,
-		`SELECT id, email, password_hash, display_name, created_at FROM users WHERE email = $1`,
+		`SELECT id, email, password_hash, display_name, created_at FROM users WHERE LOWER(email) = $1`,
 		email,
 	).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.DisplayName, &u.CreatedAt)
 	return u, err

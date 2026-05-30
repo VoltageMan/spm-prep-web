@@ -663,11 +663,11 @@ INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, ex
  'Langkah 1: Nilai sudut istimewa: kos 0° = 1 (apabila sudut = 0°, sisi bersebelahan = hipotenus).\nLangkah 2: sin 90° = 1 (apabila sudut = 90°, sisi bertentangan = hipotenus).\nJawapan: kos 0° = 1 dan sin 90° = 1',
  2),
 
-(14, 'short',
- 'Dalam segitiga bersudut tegak ABC dengan sudut tegak di C, jika AB = 13 cm dan BC = 5 cm, cari tan A.',
- NULL,
- '5/12',
- 'Langkah 1: AC = √(AB² - BC²) = √(169 - 25) = √144 = 12 cm.\nLangkah 2: tan A = sisi bertentangan / sisi bersebelahan = BC / AC = 5/12.\nJawapan: 5/12',
+(14, 'mcq',
+ 'Dalam segitiga bersudut tegak ABC dengan sudut tegak di C, jika AB = 13 cm dan BC = 5 cm, cari nilai tan A.',
+ '["A. 5/12", "B. 12/5", "C. 5/13", "D. 13/12"]',
+ 'A',
+ 'Langkah 1: AC = √(AB² - BC²) = √(169 - 25) = √144 = 12 cm.\nLangkah 2: tan A = sisi bertentangan / sisi bersebelahan = BC / AC = 5/12.\nJawapan: A. 5/12',
  3);
 
 -- Reset sequences

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/mail"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/spm-prep/api/internal/auth"
@@ -21,6 +22,7 @@ func NewAuthService(users *repository.UserRepo, jwtSecret string) *AuthService {
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password, displayName string) (string, *model.User, error) {
+	email = strings.ToLower(strings.TrimSpace(email))
 	if _, err := mail.ParseAddress(email); err != nil {
 		return "", nil, errors.New("alamat emel tidak sah")
 	}
@@ -49,6 +51,7 @@ func (s *AuthService) Register(ctx context.Context, email, password, displayName
 }
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (string, *model.User, error) {
+	email = strings.ToLower(strings.TrimSpace(email))
 	user, err := s.users.GetByEmail(ctx, email)
 	if err != nil {
 		return "", nil, errors.New("emel atau kata laluan salah")
