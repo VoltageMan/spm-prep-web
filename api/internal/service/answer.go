@@ -18,7 +18,7 @@ func CheckAnswer(questionType, correctAnswer, userAnswer string) bool {
 
 	switch questionType {
 	case "mcq":
-		return strings.EqualFold(userAnswer, correctAnswer)
+		return strings.EqualFold(mcqLetter(userAnswer), mcqLetter(correctAnswer))
 	case "short":
 		return compareNumeric(correctAnswer, userAnswer)
 	default:
@@ -33,6 +33,16 @@ func compareNumeric(correct, user string) bool {
 		return false
 	}
 	return math.Abs(cv-uv) < NumericTolerance
+}
+
+// mcqLetter extracts the option letter from an MCQ answer string.
+// Accepts both a bare letter ("C") and a full choice string ("C. answer text").
+func mcqLetter(s string) string {
+	s = strings.TrimSpace(s)
+	if i := strings.IndexAny(s, ". \t"); i >= 0 {
+		return s[:i]
+	}
+	return s
 }
 
 // parseNum handles inputs like "0.5", ".5", "-12", "60".

@@ -95,8 +95,9 @@ func (r *AttemptRepo) AllSubtopicStats(ctx context.Context, userID int64) ([]Sub
 	return stats, nil
 }
 
-// CurrentStreak returns consecutive days (including today) the user has answered questions.
-// Uses a SQL window approach to detect gaps.
+// CurrentStreak returns the number of consecutive calendar days (UTC) ending today
+// on which the user submitted at least one attempt. A day with zero attempts breaks
+// the streak; if today has no attempts the result is 0.
 func (r *AttemptRepo) CurrentStreak(ctx context.Context, userID int64) (int, error) {
 	var streak int
 	err := r.db.QueryRow(ctx,
@@ -106,9 +107,13 @@ func (r *AttemptRepo) CurrentStreak(ctx context.Context, userID int64) (int, err
 		 grouped AS (
 		   SELECT d, d - (ROW_NUMBER() OVER (ORDER BY d))::int * INTERVAL '1 day' AS grp
 		   FROM days
+		 ),
+		 latest AS (
+		   SELECT grp, MAX(d) AS last_day FROM grouped GROUP BY grp ORDER BY last_day DESC LIMIT 1
 		 )
-		 SELECT COUNT(*) FROM grouped
-		 WHERE grp = (SELECT grp FROM grouped ORDER BY d DESC LIMIT 1)`,
+		 SELECT CASE WHEN l.last_day = CURRENT_DATE THEN COUNT(*) ELSE 0 END
+		 FROM grouped g JOIN latest l ON g.grp = l.grp
+		 GROUP BY l.last_day`,
 		userID).Scan(&streak)
 	if err != nil {
 		return 0, nil

@@ -15,6 +15,7 @@ func TestCheckAnswer(t *testing.T) {
 		{"mcq case insensitive", "mcq", "B", "b", true},
 		{"mcq wrong", "mcq", "A", "D", false},
 		{"mcq with whitespace", "mcq", "A", "  A  ", true},
+		{"mcq full choice string", "mcq", "C", "C. 7", true},
 
 		// Numeric short answers
 		{"short exact int", "short", "14", "14", true},

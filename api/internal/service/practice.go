@@ -96,26 +96,18 @@ func (s *PracticeService) SubmitAnswer(ctx context.Context, userID int64, req mo
 		return nil, err
 	}
 
-	// Lazy-create or fetch existing review for this subtopic
-	now := time.Now()
-	rev, err := s.reviews.GetByUserAndSubtopic(ctx, userID, question.SubtopicID)
+	// Fetch existing review or start from a fresh baseline.
+	// Upsert is INSERT…ON CONFLICT DO UPDATE, so concurrent submits are safe.
+	base := NewReview(userID, question.SubtopicID)
+	if existing, gErr := s.reviews.GetByUserAndSubtopic(ctx, userID, question.SubtopicID); gErr == nil {
+		base = *existing
+	} else if !errors.Is(gErr, pgx.ErrNoRows) {
+		return nil, gErr
+	}
+	next := UpdateReview(base, isCorrect, time.Now())
+	rev, err := s.reviews.Upsert(ctx, &next)
 	if err != nil {
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return nil, err
-		}
-		// First answer in this subtopic — create fresh review, then apply SM-2
-		fresh := NewReview(userID, question.SubtopicID)
-		updated := UpdateReview(fresh, isCorrect, now)
-		rev, err = s.reviews.Upsert(ctx, &updated)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		updated := UpdateReview(*rev, isCorrect, now)
-		rev, err = s.reviews.Upsert(ctx, &updated)
-		if err != nil {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	return &model.AnswerResponse{

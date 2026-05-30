@@ -52,6 +52,8 @@ func (s *AuthService) Register(ctx context.Context, email, password, displayName
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (string, *model.User, error) {
 	email = strings.ToLower(strings.TrimSpace(email))
+	// TODO: timing-attack leak — email-not-found returns faster than wrong-password
+	// because bcrypt is skipped. Fix pre-launch: run a dummy bcrypt on miss.
 	user, err := s.users.GetByEmail(ctx, email)
 	if err != nil {
 		return "", nil, errors.New("emel atau kata laluan salah")

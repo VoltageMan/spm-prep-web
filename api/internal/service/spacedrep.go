@@ -55,6 +55,7 @@ func UpdateReview(rev model.Review, correct bool, now time.Time) model.Review {
 }
 
 // NewReview creates a fresh review for a user+subtopic, prior to any SM-2 update.
+// DueAt is zero; UpdateReview sets it from the caller-supplied time.
 func NewReview(userID, subtopicID int64) model.Review {
 	return model.Review{
 		UserID:       userID,
@@ -62,6 +63,5 @@ func NewReview(userID, subtopicID int64) model.Review {
 		Ease:         DefaultEase,
 		IntervalDays: 0,
 		Reps:         0,
-		DueAt:        time.Now(),
 	}
 }

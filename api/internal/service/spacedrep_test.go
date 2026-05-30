@@ -65,12 +65,30 @@ func TestUpdateReview(t *testing.T) {
 			wantDueDaysFrom: 1,
 		},
 		{
+			name:            "wrong answer on fresh review",
+			input:           model.Review{Ease: 2.5, IntervalDays: 0, Reps: 0},
+			correct:         false,
+			wantReps:        0,
+			wantInterval:    1,
+			wantEaseApprox:  2.3,
+			wantDueDaysFrom: 1,
+		},
+		{
 			name:            "wrong answer — ease cannot drop below 1.3",
 			input:           model.Review{Ease: 1.4, IntervalDays: 3, Reps: 2},
 			correct:         false,
 			wantReps:        0,
 			wantInterval:    1,
 			wantEaseApprox:  1.3, // max(1.3, 1.4 - 0.2) = 1.3 (not 1.2)
+			wantDueDaysFrom: 1,
+		},
+		{
+			name:            "wrong answer — ease already at minimum stays 1.3",
+			input:           model.Review{Ease: 1.3, IntervalDays: 3, Reps: 2},
+			correct:         false,
+			wantReps:        0,
+			wantInterval:    1,
+			wantEaseApprox:  1.3, // max(1.3, 1.3 - 0.2) = max(1.3, 1.1) = 1.3
 			wantDueDaysFrom: 1,
 		},
 		{
