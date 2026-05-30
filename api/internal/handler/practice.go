@@ -17,7 +17,11 @@ func NewPracticeHandler(svc *service.PracticeService) *PracticeHandler {
 }
 
 func (h *PracticeHandler) NextQuestion(w http.ResponseWriter, r *http.Request) {
-	userID := auth.UserIDFromContext(r.Context())
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusInternalServerError, "auth middleware misconfigured")
+		return
+	}
 	q, err := h.svc.NextQuestion(r.Context(), userID)
 	if err != nil {
 		writeError(w, http.StatusNotFound, err.Error())
@@ -27,7 +31,11 @@ func (h *PracticeHandler) NextQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PracticeHandler) SubmitAnswer(w http.ResponseWriter, r *http.Request) {
-	userID := auth.UserIDFromContext(r.Context())
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusInternalServerError, "auth middleware misconfigured")
+		return
+	}
 
 	var req model.AnswerRequest
 	if err := decodeJSON(r, &req); err != nil {

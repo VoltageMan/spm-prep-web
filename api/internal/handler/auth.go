@@ -61,7 +61,11 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) Me(w http.ResponseWriter, r *http.Request) {
-	userID := auth.UserIDFromContext(r.Context())
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusInternalServerError, "auth middleware misconfigured")
+		return
+	}
 	user, err := h.svc.GetUser(r.Context(), userID)
 	if err != nil {
 		writeError(w, http.StatusNotFound, "pengguna tidak dijumpai")

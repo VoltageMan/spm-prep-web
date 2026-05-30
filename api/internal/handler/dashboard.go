@@ -16,7 +16,11 @@ func NewDashboardHandler(svc *service.PracticeService) *DashboardHandler {
 }
 
 func (h *DashboardHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
-	userID := auth.UserIDFromContext(r.Context())
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusInternalServerError, "auth middleware misconfigured")
+		return
+	}
 	data, err := h.svc.Dashboard(r.Context(), userID)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "gagal memuatkan papan pemuka")
