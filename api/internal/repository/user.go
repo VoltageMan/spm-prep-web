@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/spm-prep/api/internal/model"
 )
 
@@ -25,7 +26,14 @@ func (r *UserRepo) Create(ctx context.Context, email, passwordHash, displayName 
 		 RETURNING id, email, password_hash, display_name, created_at`,
 		email, passwordHash, displayName,
 	).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.DisplayName, &u.CreatedAt)
-	return u, err
+	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return nil, ErrEmailTaken
+		}
+		return nil, err
+	}
+	return u, nil
 }
 
 func (r *UserRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {

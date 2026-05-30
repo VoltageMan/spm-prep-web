@@ -40,7 +40,7 @@ func (r *AttemptRepo) RecentQuestionIDs(ctx context.Context, userID int64, limit
 	}
 	defer rows.Close()
 
-	var ids []int64
+	ids := []int64{}
 	for rows.Next() {
 		var id int64
 		if err := rows.Scan(&id); err != nil {
@@ -98,6 +98,8 @@ func (r *AttemptRepo) AllSubtopicStats(ctx context.Context, userID int64) ([]Sub
 }
 
 // CurrentStreak returns the number of consecutive calendar days (UTC) ending today
+// TODO: thread the user's timezone through so Malaysian users (UTC+8) don't see the streak
+// flip a day early/late near midnight.
 // on which the user submitted at least one attempt. A day with zero attempts breaks
 // the streak; if today has no attempts the result is 0.
 func (r *AttemptRepo) CurrentStreak(ctx context.Context, userID int64) (int, error) {

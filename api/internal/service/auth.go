@@ -42,7 +42,10 @@ func (s *AuthService) Register(ctx context.Context, email, password, displayName
 
 	user, err := s.users.Create(ctx, email, hash, displayName)
 	if err != nil {
-		return "", nil, errors.New("emel sudah didaftarkan")
+		if errors.Is(err, repository.ErrEmailTaken) {
+			return "", nil, errors.New("emel sudah didaftarkan")
+		}
+		return "", nil, err
 	}
 
 	token, err := auth.GenerateToken(user.ID, s.jwtSecret)

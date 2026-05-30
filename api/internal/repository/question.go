@@ -45,6 +45,10 @@ func (r *QuestionRepo) GetBySubtopicForUser(ctx context.Context, userID, subtopi
 	// (a) Prefer questions not in excludeIDs that user hasn't attempted.
 	// (b) Fallback: question with oldest last-attempt, not in excludeIDs.
 	// (c) Final fallback: question with oldest last-attempt (any).
+	if excludeIDs == nil {
+		excludeIDs = []int64{}
+	}
+
 	q := &model.Question{}
 	var choicesRaw []byte
 
@@ -55,7 +59,7 @@ func (r *QuestionRepo) GetBySubtopicForUser(ctx context.Context, userID, subtopi
 		 WHERE q.subtopic_id = $1
 		   AND q.id != ALL($3)
 		   AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.question_id = q.id AND a.user_id = $2)
-		 ORDER BY q.id
+		 ORDER BY q.difficulty ASC, q.id ASC
 		 LIMIT 1`,
 		subtopicID, userID, excludeIDs,
 	).Scan(&q.ID, &q.SubtopicID, &q.Type, &q.Stem, &choicesRaw, &q.CorrectAnswer, &q.Explanation, &q.Difficulty)
@@ -100,7 +104,7 @@ func (r *QuestionRepo) GetBySubtopicForUser(ctx context.Context, userID, subtopi
 		   GROUP BY question_id
 		 ) a ON a.question_id = q.id
 		 WHERE q.subtopic_id = $1
-		 ORDER BY a.last_at ASC NULLS FIRST
+		 ORDER BY a.last_at ASC NULLS FIRST, q.difficulty ASC
 		 LIMIT 1`,
 		subtopicID, userID,
 	).Scan(&q.ID, &q.SubtopicID, &q.Type, &q.Stem, &choicesRaw, &q.CorrectAnswer, &q.Explanation, &q.Difficulty)
