@@ -5,7 +5,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/spm-prep/api/internal/model"
 	"github.com/spm-prep/api/internal/repository"
 )
@@ -14,10 +13,11 @@ type PracticeService struct {
 	questions *repository.QuestionRepo
 	attempts  *repository.AttemptRepo
 	reviews   *repository.ReviewRepo
+	nowFn     func() time.Time
 }
 
 func NewPracticeService(q *repository.QuestionRepo, a *repository.AttemptRepo, r *repository.ReviewRepo) *PracticeService {
-	return &PracticeService{questions: q, attempts: a, reviews: r}
+	return &PracticeService{questions: q, attempts: a, reviews: r, nowFn: time.Now}
 }
 
 // NextQuestion selects the next question for the user using the adaptive algorithm.
@@ -101,10 +101,10 @@ func (s *PracticeService) SubmitAnswer(ctx context.Context, userID int64, req mo
 	base := NewReview(userID, question.SubtopicID)
 	if existing, gErr := s.reviews.GetByUserAndSubtopic(ctx, userID, question.SubtopicID); gErr == nil {
 		base = *existing
-	} else if !errors.Is(gErr, pgx.ErrNoRows) {
+	} else if !errors.Is(gErr, repository.ErrNotFound) {
 		return nil, gErr
 	}
-	next := UpdateReview(base, isCorrect, time.Now())
+	next := UpdateReview(base, isCorrect, s.nowFn())
 	rev, err := s.reviews.Upsert(ctx, &next)
 	if err != nil {
 		return nil, err
@@ -165,7 +165,7 @@ func (s *PracticeService) Dashboard(ctx context.Context, userID int64) (*model.D
 
 	streak, err := s.attempts.CurrentStreak(ctx, userID)
 	if err != nil {
-		streak = 0
+		return nil, err
 	}
 
 	return &model.DashboardResponse{

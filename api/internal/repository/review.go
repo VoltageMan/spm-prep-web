@@ -2,7 +2,9 @@ package repository
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/spm-prep/api/internal/model"
 )
@@ -22,6 +24,9 @@ func (r *ReviewRepo) GetByUserAndSubtopic(ctx context.Context, userID, subtopicI
 		 FROM reviews WHERE user_id = $1 AND subtopic_id = $2`,
 		userID, subtopicID,
 	).Scan(&rev.ID, &rev.UserID, &rev.SubtopicID, &rev.Ease, &rev.IntervalDays, &rev.DueAt, &rev.Reps, &rev.UpdatedAt)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, ErrNotFound
+	}
 	return rev, err
 }
 

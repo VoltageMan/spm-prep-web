@@ -13,12 +13,14 @@ import (
 )
 
 type AuthService struct {
-	users     *repository.UserRepo
-	jwtSecret string
+	users      *repository.UserRepo
+	jwtSecret  string
+	dummyHash  string
 }
 
 func NewAuthService(users *repository.UserRepo, jwtSecret string) *AuthService {
-	return &AuthService{users: users, jwtSecret: jwtSecret}
+	dummy, _ := auth.HashPassword("dummy-constant-value-for-timing-equalization")
+	return &AuthService{users: users, jwtSecret: jwtSecret, dummyHash: dummy}
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password, displayName string) (string, *model.User, error) {
@@ -52,10 +54,9 @@ func (s *AuthService) Register(ctx context.Context, email, password, displayName
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (string, *model.User, error) {
 	email = strings.ToLower(strings.TrimSpace(email))
-	// TODO: timing-attack leak — email-not-found returns faster than wrong-password
-	// because bcrypt is skipped. Fix pre-launch: run a dummy bcrypt on miss.
 	user, err := s.users.GetByEmail(ctx, email)
 	if err != nil {
+		auth.CheckPassword(s.dummyHash, password)
 		return "", nil, errors.New("emel atau kata laluan salah")
 	}
 	if !auth.CheckPassword(user.PasswordHash, password) {

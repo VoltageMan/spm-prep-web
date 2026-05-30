@@ -2,7 +2,9 @@ package repository
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -116,7 +118,10 @@ func (r *AttemptRepo) CurrentStreak(ctx context.Context, userID int64) (int, err
 		 GROUP BY l.last_day`,
 		userID).Scan(&streak)
 	if err != nil {
-		return 0, nil
+		if errors.Is(err, pgx.ErrNoRows) {
+			return 0, nil
+		}
+		return 0, err
 	}
 	return streak, nil
 }

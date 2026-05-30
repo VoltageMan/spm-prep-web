@@ -3,7 +3,9 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"errors"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/spm-prep/api/internal/model"
 )
@@ -24,6 +26,9 @@ func (r *QuestionRepo) GetByID(ctx context.Context, id int64) (*model.Question, 
 		 FROM questions WHERE id = $1`, id,
 	).Scan(&q.ID, &q.SubtopicID, &q.Type, &q.Stem, &choicesRaw, &q.CorrectAnswer, &q.Explanation, &q.Difficulty)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, ErrNotFound
+		}
 		return nil, err
 	}
 	if choicesRaw != nil {
