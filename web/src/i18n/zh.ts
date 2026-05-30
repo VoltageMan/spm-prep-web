@@ -40,6 +40,16 @@ const zh = {
   notStarted: '尚未开始',
   days: '天',
 
+  // Report
+  reportButton: '这道题有问题？',
+  reportPlaceholder: '有什么问题？（可选）',
+  reportCancel: '取消',
+  reportSubmit: '发送报告',
+  reportSubmitting: '发送中...',
+  reportThanks: '感谢您的反馈',
+  reportDuplicate: '您已经举报过这道题了',
+  reportError: '发送失败，请重试。',
+
   // Errors
   errorGeneric: '出现错误，请重试。',
 } as const;

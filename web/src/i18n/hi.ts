@@ -40,6 +40,16 @@ const hi = {
   notStarted: 'शुरू नहीं हुआ',
   days: 'दिन',
 
+  // Report
+  reportButton: 'क्या यह प्रश्न गलत है?',
+  reportPlaceholder: 'क्या गलत है? (वैकल्पिक)',
+  reportCancel: 'रद्द करें',
+  reportSubmit: 'रिपोर्ट भेजें',
+  reportSubmitting: 'भेजा जा रहा है...',
+  reportThanks: 'आपकी रिपोर्ट के लिए धन्यवाद',
+  reportDuplicate: 'आप इस प्रश्न की रिपोर्ट पहले ही कर चुके हैं',
+  reportError: 'रिपोर्ट भेजने में विफल। पुनः प्रयास करें।',
+
   // Errors
   errorGeneric: 'कुछ गलत हुआ। कृपया पुनः प्रयास करें।',
 } as const;
