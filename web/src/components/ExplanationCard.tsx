@@ -40,6 +40,8 @@ export default function ExplanationCard({ result, questionId, onNext }: Props) {
     <div className={`explanation-card ${result.is_correct ? 'correct' : 'incorrect'}`}>
       <h3>{result.is_correct ? t.correct : t.incorrect}</h3>
 
+      <p style={{ whiteSpace: 'pre-wrap' }}>{t.explanation}</p>
+
       <div className="explanation-body">
         <h4>{t.explanation}</h4>
         {result.explanation.split('\n').map((line, i) => (
