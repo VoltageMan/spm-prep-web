@@ -1,0 +1,134 @@
+-- Soalan 1: Mudah (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan persamaan: 5x - 7 = 18',
+ '["A. x = 3", "B. x = 4", "C. x = 5", "D. x = 10"]',
+ 'C',
+ 'Langkah 1: Tambah 7 di kedua-dua belah persamaan, 5x = 18 + 7.\nLangkah 2: 5x = 25.\nLangkah 3: Bahagi kedua-dua belah dengan 5, x = 25 ÷ 5 = 5.\nJawapan: x = 5',
+ 1);
+
+-- Soalan 2: Mudah (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Diberi bahawa 4 - 3y = 16. Cari nilai y.',
+ '["A. -4", "B. -2", "C. 4", "D. 12"]',
+ 'A',
+ 'Langkah 1: Pindahkan 4 ke sebelah kanan, -3y = 16 - 4.\nLangkah 2: -3y = 12.\nLangkah 3: y = 12 ÷ (-3) = -4.\nJawapan: -4',
+ 1);
+
+-- Soalan 3: Mudah (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan: m/3 + 4 = 9',
+ '["A. m = 5", "B. m = 10", "C. m = 12", "D. m = 15"]',
+ 'D',
+ 'Langkah 1: Tolak 4 daripada kedua-dua belah, m/3 = 9 - 4.\nLangkah 2: m/3 = 5.\nLangkah 3: Darab 3, m = 5 × 3 = 15.\nJawapan: m = 15',
+ 1);
+
+-- Soalan 4: Mudah (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Selesaikan: 3(k - 2) = 15',
+ NULL,
+ '7',
+ 'Langkah 1: Bahagi kedua-dua belah dengan 3, k - 2 = 15 ÷ 3.\nLangkah 2: k - 2 = 5.\nLangkah 3: k = 5 + 2 = 7.\nJawapan: 7',
+ 1);
+
+-- Soalan 5: Mudah (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Cari nilai p jika 7p + 5 = 2p + 20.',
+ NULL,
+ '3',
+ 'Langkah 1: Kumpulkan sebutan p, 7p - 2p = 20 - 5.\nLangkah 2: 5p = 15.\nLangkah 3: p = 15 ÷ 5 = 3.\nJawapan: 3',
+ 1);
+
+-- Soalan 6: Sederhana (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Ahmad membeli 4 buah buku tulis dan sebatang pen yang berharga RM3.00. Jumlah bayarannya ialah RM15.00. Berapakah harga sebuah buku tulis?',
+ '["A. RM2.50", "B. RM3.00", "C. RM3.50", "D. RM4.00"]',
+ 'B',
+ 'Langkah 1: Katakan harga buku = x. Maka, 4x + 3 = 15.\nLangkah 2: 4x = 15 - 3 = 12.\nLangkah 3: x = 12 ÷ 4 = 3.\nJawapan: RM3.00',
+ 2);
+
+-- Soalan 7: Sederhana (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan persamaan: (x - 2) / 3 = x / 5',
+ '["A. x = 2", "B. x = 3", "C. x = 5", "D. x = 10"]',
+ 'C',
+ 'Langkah 1: Darab silang kedua-dua belah: 5(x - 2) = 3x.\nLangkah 2: Kembangkan: 5x - 10 = 3x.\nLangkah 3: 5x - 3x = 10.\nLangkah 4: 2x = 10, maka x = 5.\nJawapan: x = 5',
+ 2);
+
+-- Soalan 8: Sederhana (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Sebuah segi empat tepat mempunyai panjang (2x + 1) cm dan lebar 4 cm. Jika perimeter segi empat tepat itu ialah 30 cm, cari nilai x.',
+ '["A. x = 3", "B. x = 4", "C. x = 5", "D. x = 6"]',
+ 'C',
+ 'Langkah 1: Formula perimeter = 2(panjang + lebar). Maka, 2((2x + 1) + 4) = 30.\nLangkah 2: 2(2x + 5) = 30.\nLangkah 3: 2x + 5 = 15.\nLangkah 4: 2x = 10, x = 5.\nJawapan: x = 5',
+ 2);
+
+-- Soalan 9: Sederhana (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Diberi p = 2q - 1 dan p + q = 11. Cari nilai q.',
+ '["A. q = 2", "B. q = 3", "C. q = 4", "D. q = 5"]',
+ 'C',
+ 'Langkah 1: Gantikan nilai p ke dalam persamaan kedua: (2q - 1) + q = 11.\nLangkah 2: 3q - 1 = 11.\nLangkah 3: 3q = 12.\nLangkah 4: q = 4.\nJawapan: q = 4',
+ 2);
+
+-- Soalan 10: Sederhana (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Selesaikan: x/2 - x/5 = 6',
+ NULL,
+ '20',
+ 'Langkah 1: Samakan penyebut menjadi 10. (5x/10) - (2x/10) = 6.\nLangkah 2: 3x / 10 = 6.\nLangkah 3: 3x = 60.\nLangkah 4: x = 60 ÷ 3 = 20.\nJawapan: 20',
+ 2);
+
+-- Soalan 11: Sederhana (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Apabila suatu nombor didarab dengan 4 dan ditolak dengan 7, hasilnya ialah 29. Apakah nombor tersebut?',
+ NULL,
+ '9',
+ 'Langkah 1: Katakan nombor tersebut ialah n. Persamaan: 4n - 7 = 29.\nLangkah 2: 4n = 29 + 7 = 36.\nLangkah 3: n = 36 ÷ 4 = 9.\nJawapan: 9',
+ 2);
+
+-- Soalan 12: Sukar (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Lima tahun lalu, umur bapa Siti adalah 4 kali ganda umur Siti. Jika umur bapa Siti sekarang ialah 41 tahun, berapakah umur Siti sekarang?',
+ '["A. 9 tahun", "B. 11 tahun", "C. 13 tahun", "D. 14 tahun"]',
+ 'D',
+ 'Langkah 1: Umur bapa Siti 5 tahun lalu = 41 - 5 = 36 tahun.\nLangkah 2: Katakan umur Siti 5 tahun lalu ialah x. Maka, 4x = 36.\nLangkah 3: x = 9 tahun (umur Siti 5 tahun lalu).\nLangkah 4: Umur Siti sekarang = 9 + 5 = 14 tahun.\nJawapan: 14 tahun',
+ 3);
+
+-- Soalan 13: Sukar (MCQ)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan persamaan linear: (2x - 1)/3 - (x + 2)/2 = 1',
+ '["A. x = 6", "B. x = 8", "C. x = 12", "D. x = 14"]',
+ 'D',
+ 'Langkah 1: Darab keseluruhan persamaan dengan 6 (GSTK bagi 3 dan 2): 2(2x - 1) - 3(x + 2) = 6(1).\nLangkah 2: Kembangkan: 4x - 2 - 3x - 6 = 6.\nLangkah 3: Permudahkan: x - 8 = 6.\nLangkah 4: x = 6 + 8 = 14.\nJawapan: x = 14',
+ 3);
+
+-- Soalan 14: Sukar (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Harga bagi 2 biji epal dan 3 biji oren ialah RM12, manakala harga bagi 4 biji epal dan 1 biji oren ialah RM14. Cari harga sebiji epal dalam RM.',
+ NULL,
+ '3',
+ 'Langkah 1: Biar e = epal, r = oren. (1) 2e + 3r = 12. (2) 4e + r = 14.\nLangkah 2: Daripada persamaan (2), r = 14 - 4e.\nLangkah 3: Gantikan ke dalam (1): 2e + 3(14 - 4e) = 12.\nLangkah 4: Kembangkan: 2e + 42 - 12e = 12 -> -10e = -30.\nLangkah 5: e = -30 ÷ (-10) = 3.\nJawapan: 3',
+ 3);
+
+-- Soalan 15: Sukar (Short)
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Dalam sebuah kelas, bilangan pelajar perempuan adalah dua kali ganda bilangan pelajar lelaki. Jika 4 pelajar perempuan dipindahkan keluar dan 6 pelajar lelaki dimasukkan ke dalam kelas, bilangan mereka menjadi sama. Berapakah jumlah asal pelajar dalam kelas itu?',
+ NULL,
+ '30',
+ 'Langkah 1: Katakan bilangan lelaki = x, perempuan = 2x.\nLangkah 2: Selepas perubahan, bilangan menjadi sama: 2x - 4 = x + 6.\nLangkah 3: Selesaikan persamaan: 2x - x = 6 + 4, maka x = 10.\nLangkah 4: Bilangan asal lelaki = 10, perempuan = 2(10) = 20.\nLangkah 5: Jumlah pelajar = 10 + 20 = 30.\nJawapan: 30',
+ 3);

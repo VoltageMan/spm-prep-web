@@ -1,0 +1,34 @@
+-- Test batch for validator verification
+-- 3 valid questions + 1 intentionally broken one to test error detection
+
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan: 7x - 3 = 18',
+ '["A. x = 2", "B. x = 3", "C. x = 4", "D. x = 5"]',
+ 'B',
+ 'Langkah 1: 7x = 18 + 3 = 21.\nLangkah 2: x = 21 ÷ 7 = 3.\nJawapan: x = 3',
+ 2);
+
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'short',
+ 'Selesaikan: 3x + 4 = 19',
+ NULL,
+ '5',
+ 'Langkah 1: 3x = 19 - 4 = 15.\nLangkah 2: x = 15 ÷ 3 = 5.\nJawapan: x = 5',
+ 1);
+
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan: 4(x - 1) = 20',
+ '["A. x = 4", "B. x = 5", "C. x = 6", "D. x = 7"]',
+ 'C',
+ 'Langkah 1: 4x - 4 = 20.\nLangkah 2: 4x = 24.\nLangkah 3: x = 6.\nJawapan: x = 6',
+ 2);
+
+INSERT INTO questions (subtopic_id, type, stem, choices_json, correct_answer, explanation, difficulty) VALUES
+(5, 'mcq',
+ 'Selesaikan: 2x = 10',
+ '["A. x = 3", "B. x = 4", "C. x = 5", "D. x = 6"]',
+ 'B',
+ 'Langkah 1: x = 10 / 2 = 5.\nJawapan: x = 5',
+ 1);
