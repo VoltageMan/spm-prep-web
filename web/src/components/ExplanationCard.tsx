@@ -36,15 +36,21 @@ export default function ExplanationCard({ result, questionId, onNext }: Props) {
     }
   };
 
+  // The DB stores line breaks as literal text ("\n" and sometimes "\\n"),
+  // not as real newline characters. Convert both forms to real newlines
+  // before splitting, so each step renders on its own line.
+  const explanationLines = result.explanation
+    .replace(/\\\\n/g, '\n') // literal "\\n" (two backslashes + n) -> newline
+    .replace(/\\n/g, '\n')   // literal "\n"  (one backslash  + n) -> newline
+    .split('\n');
+
   return (
     <div className={`explanation-card ${result.is_correct ? 'correct' : 'incorrect'}`}>
       <h3>{result.is_correct ? t.correct : t.incorrect}</h3>
 
-      <p style={{ whiteSpace: 'pre-wrap' }}>{t.explanation}</p>
-
       <div className="explanation-body">
         <h4>{t.explanation}</h4>
-        {result.explanation.split('\n').map((line, i) => (
+        {explanationLines.map((line, i) => (
           <p key={i}>{line}</p>
         ))}
       </div>

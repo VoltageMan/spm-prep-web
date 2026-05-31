@@ -353,9 +353,6 @@ body {
   gap: 0.5rem;
 }
 
-.explanation-text {
-  white-space: pre-wrap;
-}
 
 @media (min-width: 480px) {
   .subtopic-row {
